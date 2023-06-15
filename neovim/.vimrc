@@ -1,12 +1,8 @@
- "Performance of CoC
-set updatetime=300
-set signcolumn=yes
-
 set number  "Show numbers on the line
 set relativenumber  "The numbers above and below the line are relative to the line number
 set mouse=a
 set numberwidth=1
-set clipboard=unnamedplus
+set clipboard=unnamed
 syntax enable
 syntax on
 set showcmd
@@ -21,7 +17,6 @@ set noshowmode
 set smarttab
 set tabstop=4
 set softtabstop=4
-
 " set paste   "Enable pasting
 " set termguicolors
 
@@ -51,10 +46,13 @@ set background=dark
 let g:nord_bold_vertical_split_line = 1
 let g:nord_uniform_diff_background = 1
 
-" NerdTree 
 " Autoclose Nerdtree
 let NERDTreeQuitOnOpen=1
-let NERDTreeShowHidden=1
+
+" COC
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -62,12 +60,10 @@ call plug#begin('~/.vim/plugged')
 "Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
-Plug 'rafi/awesome-vim-colorschemes' " Retro scheme
+Plug 'vim-scripts/peaksea'
 
-"Syntax 
+"Syntax highligh
 Plug 'sheerun/vim-polyglot'
-Plug 'styled-components/vim-styled-components', {'branch': 'main'}
-Plug 'norcalli/nvim-colorizer.lua'
 
 "Status bar
 Plug 'maximbaz/lightline-ale'
@@ -87,11 +83,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 "Autocomplete
 Plug 'sirver/ultisnips'
-  " Snippets files 
-Plug 'honza/vim-snippets'
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 
 "Test
 Plug 'tyewang/vimux-jest-test'
@@ -106,6 +98,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'mhinz/vim-signify'
 Plug 'yggdroot/indentline'
 Plug 'scrooloose/nerdcommenter'
+Plug 'dense-analysis/ale'
 
 " Adapt colors to typescript
 Plug 'pangloss/vim-javascript'
@@ -118,10 +111,31 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 
 " Debugging
-Plug 'puremourning/vimspector' 
+" Plug 'puremourning/vimspector' 
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'nvim-telescope/telescope-dap.nvim'
+" Lenguajes
+" Python
+Plug 'mfussenegger/nvim-dap-python'
+" Java
+Plug 'mfussenegger/nvim-dap-java' 
+" C#
+Plug 'mfussenegger/nvim-dap-netcore' 
+" JavaScript
+Plug 'mxsdev/nvim-dap-vscode-js'  
+" TypeScript
+Plug 'mfussenegger/nvim-dap-node' 
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Telescope requeriments
+Plug 'nvim-lua/popup.vim'
+Plug 'nvim-lua/plenary.vim'
+Plug 'nvim-telescope/telescope.vim'
 
 " Commentaries helper
-Plug 'tpope/vim-commentary' " gcc & gc for Commentaries
+Plug 'tpope/vim-commentary'
 
 "CSS color preview
 Plug 'ap/vim-css-color'
@@ -132,91 +146,20 @@ Plug 'ryanoasis/vim-devicons'
 "Terminal
 Plug 'tc50cal/vim-terminal'
 
-" Tagbar for code navigation
-Plug 'preservim/tagbar'
-
-" JavaScript React
-Plug 'yuezk/vim-js'
+" Format
+Plug 'sbdchd/neoformat'
 
 " Copilot
-Plug 'github/copilot.vim' 
+Plug 'github/copilot.vim'
 
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 " Plugins
 " source $HOME/.config/nvim/plugins.vim
 
-" Plug configuration
-" JS Bundle variables
-let g:javascript_plugin_jsdoc=1
-let g:javascript_plugin_ngdoc=1
-let g:javascript_plugin_flow=1 
-augroup javascript_folding
-  au!
-  au FileType javasrcipt setlocal foldmethod=syntax 
-augroup END
-
-" HTML, JSX
-let g:closetag_filenames = '*.html,*.js,*.jsx,*.ts,*.tsx'
-
-"  nerdtree
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-let NERDTreeAutoDeleteBuffer=1
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeMapOpenInTab='\t'
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsSnippetDirectories=[$HOME.'/configs/.vim/UltiSnips']
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsListSnippets="<C-_>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
-
-" kite
-"let g:kite_supported_languages = ['*']
-let g:coc_global_extensions = [
-      \ 'coc-tsserver'
-      \ ]
-" tmux navigator
-let g:tmux_navigator_no_mappings = 1
-
-" coc
-autocmd FileType scss setl iskeyword+=@-@
-
-" vim fugitive
-command! -bang -nargs=? -complete=dir GFiles
-  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-" if hidden is not set, TextEdit might fail.
-set hidden
-
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=1
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-" fugitive always vertical diffing
-set diffopt+=vertical
+" Configuring Debugger
 
 " Mapping
 let mapleader=" "
@@ -256,14 +199,8 @@ nnoremap <silent> <Leader><C-j> :TmuxNavigateDown<CR>
 nnoremap <silent> <Leader><C-k> :TmuxNavigateUp<CR>
 nnoremap <silent> <Leader><C-l> :TmuxNavigateRight<CR>
 
-" remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nnoremap <leader>gs :CocSearch
-" Coc select
-inoremap <silent><expr> <space> coc#pum#visible() ? "\<SPACE>" : coc#refreh()
+" diagnostics
+nnoremap <Leader>kp :let @*=expand("%")<CR>
 
 " tabs navigation
 map <Leader>h :tabprevious<CR>
@@ -273,8 +210,8 @@ map <Leader>l :tabnext<CR>
 map <Leader>ob :Buffers<CR>
 
 " faster scrolling
-"nnoremap <C-p>: 10<C-e>
-"nnoremap <C-;>: 10<C-y>
+nnoremap <C-j> 10<C-e>
+nnoremap <C-k> 10<C-y>
 
 " fast search
 nmap <Leader>s <Plug>(easymotion-s2)
@@ -282,13 +219,56 @@ nmap <Leader>s <Plug>(easymotion-s2)
 " run current js file
 nnoremap <Leader>x :!node %<cr>
 
-" Split view
-nnoremap <Leader>vs :vsp<CR>
-nnoremap <Leader>hs :sp<CR>
+" Format the code 
+nnoremap <Leader>fm :Format<CR>
 
-" Tagbar toogle
-nmap <F8> :TagbarToggle<CR>
+" Tmux split
+nnoremap <Leader>vs :vsplit<CR>
+nnoremap <Leader>hs :split<CR>
+nnoremap <Leader>bd :bd<CR>
+nnoremap <Leader>on :on<CR>
 
+" CoC 
+nnoremap <silent> <Leader>Cr <Plug>(coc-rename)
+nnoremap <silent> <Leader>Ca <Plug>(coc-codeaction)
+nnoremap <silent> <Leader>Cc <Plug>(coc-command)
+nnoremap <silent> <Leader>Cdn <Plug>(coc-diagnostic-next)
+nnoremap <silent> <Leader>Cdp <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <Leader>Cds <Plug>(coc-diagnostic-select)
+nnoremap <silent> <Leader>Cf <Plug>(coc-fix-current)
+nnoremap <silent> <Leader>Ci :CocInfo<CR>
+nnoremap <silent> <Leader>Cl :CocList<CR>
+nnoremap <silent> <Leader>Cr :CocRestart<CR>
+nnoremap <silent> <Leader>Cs :CocStart<CR>
+nnoremap <silent> <Leader>Cu :CocUpdate<CR>
+nnoremap <silent> <Leader>Ch :CocList extensions<CR>
+nnoremap <silent> <Leader>Co :CocList outline<CR>
+" remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gdc <Plug>(coc-declarartion)
+
+" remap for normal mode
+
+
+" NERDTree
+let NERDTreeShowHidden=1
+let NERDTreeShowBookmarks=1
+let NERDTreeShowLineNumbers=1
+let NERDTreeMinimalUI=1
+
+"DAP mapping 
+nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+nnoremap <silent> <Leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <Leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <Leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <Leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <silent> <Leader>dl :lua require'dap'.run_last()<CR>
 
 " source $HOME/.config/nvim/maps.vim
 
@@ -296,12 +276,7 @@ nmap <F8> :TagbarToggle<CR>
 source $HOME/.config/nvim/cocconfig.vim
 
 " Compilers
-source $HOME/.config/nvim/vimspector.vim
-
-" Auto enable snippets
-"autocmd FileType javascript UltiSnipsAddFiletypes javascript-node
+" source $HOME/.config/nvim/vimspector.vim
 
 "colorscheme nord
 colorscheme gruvbox
-  
-
